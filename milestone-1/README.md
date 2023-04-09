@@ -1,6 +1,5 @@
 # Milestone 1
 
-
 ## Steps
 1. Looked for Python images on Docker
     - https://hub.docker.com/_/python/tags
