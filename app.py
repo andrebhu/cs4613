@@ -3,6 +3,7 @@ from transformers import pipeline, DistilBertTokenizerFast
 
 st.title("Toxic Tweets")
 
+# Available models for prediction
 models = [
     "notbhu/toxic-tweet-classifier",
     "distilbert-base-uncased-finetuned-sst-2-english",
@@ -10,18 +11,29 @@ models = [
     "Seethal/sentiment_analysis_generic_dataset",
 ]
 
+
+# Default tweet for users to test on
 default_tweet = """🐰🌸🐣 Happy Easter 🌸🐰🐣! It's time to crack open some eggs 🥚 and celebrate with the Easter Bunny 🐰🐇. Hop 🐇 on over to church ⛪️ and get down on your knees 🧎‍♂️🙏 for some Easter blessings 🐰✝️🌷. Did you know that Jesus 🙏💒 died and rose again 💀🙌🌅? It's a time for rejoicing 🎉 and enjoying the company of loved ones 👨‍👩‍👧‍👦. So put on your Sunday best 👗 and get ready to hunt 🕵️‍♀️ for some Easter treats 🍫🥚🍭. Happy Easter, bunnies 🐰👯‍♀️! Don't forget to spread the love ❤️ and send this message to your favorite bunnies 💌🐇.
 """
 
+
+# Loads background image for Streamlit
 st.image(
     "https://www.gannett-cdn.com/presto/2022/04/12/USAT/3a93e183-d87d-493a-97a9-cf75fb7b9d18-AP_Pennsylvania_Easter.jpg"
 )
 
+
+# User input for tweet
 tweet = st.text_area("Enter a tweet", value=default_tweet)
+
+# User selection for model
 model = st.selectbox("Select a model", models)
+
+# Checks if predict button is clicked
 button = st.button("Predict")
 
 
+# Function used to get the label for the model
 def getLabel(label, model):
     labels = {
         "notbhu/toxic-tweet-classifier": {
@@ -46,10 +58,10 @@ def getLabel(label, model):
             "LABEL_1": "POSITIVE",
         },
     }
-
     return labels[model][label]
 
 
+# Function used to predict the tweet based on selected model
 def predict(tweet, model):
     with st.spinner("Predicting..."):
         tokenizer = DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased")
@@ -71,6 +83,7 @@ def predict(tweet, model):
             st.error(e)
 
 
+# Main Streamlit logic is controlled here
 if button:
     if not tweet:
         st.warning("Please enter a tweet")
